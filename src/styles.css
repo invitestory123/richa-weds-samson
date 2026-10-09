@@ -201,18 +201,33 @@
   background: linear-gradient(90deg, transparent, var(--hall-glow), transparent);
 }
 
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 800ms var(--ease-silk),
+    transform 800ms var(--ease-silk);
+  will-change: opacity, transform;
+}
+
+.reveal.reveal-on,
+.reveal-on {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) !important;
+}
+
 @utility reveal {
   opacity: 0;
-  transform: translate3d(0, 26px, 0);
+  transform: translate3d(0, 24px, 0);
   transition:
-    opacity 900ms var(--ease-silk),
-    transform 900ms var(--ease-silk);
+    opacity 800ms var(--ease-silk),
+    transform 800ms var(--ease-silk);
   will-change: opacity, transform;
 }
 
 @utility reveal-on {
-  opacity: 1;
-  transform: none;
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) !important;
 }
 
 @utility press {
@@ -538,7 +553,7 @@
 }
 .celebration-stage {
   position: relative;
-  min-height: 560px;
+  min-height: 600px;
   overflow: hidden;
   background:
     radial-gradient(circle at 16% 35%, rgba(233, 200, 121, 0.18), transparent 26%),
@@ -558,9 +573,9 @@
 .celebration-stage__content {
   position: absolute;
   z-index: 2;
-  right: clamp(2rem, 7vw, 7rem);
+  right: clamp(2rem, 6vw, 6rem);
   top: 50%;
-  width: min(36%, 390px);
+  width: min(44%, 460px);
   transform: translateY(-50%);
   color: var(--ivory);
   animation: chapter-in 600ms var(--ease-silk) both;
@@ -675,7 +690,8 @@
     padding-inline: 1.25rem;
   }
   .celebration-stage {
-    min-height: 650px;
+    min-height: auto;
+    padding: 2rem 1.25rem 2.25rem;
   }
   .celebration-stage__wash {
     background: linear-gradient(
@@ -686,11 +702,12 @@
     );
   }
   .celebration-stage__content {
-    left: 1.5rem;
-    right: 1.5rem;
+    position: relative;
+    left: auto;
+    right: auto;
     top: auto;
-    bottom: 2.5rem;
-    width: auto;
+    bottom: auto;
+    width: 100%;
     transform: none;
   }
   @keyframes chapter-in {

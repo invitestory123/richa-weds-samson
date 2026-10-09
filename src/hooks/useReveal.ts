@@ -1,12 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.18) {
+export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.05) {
   const ref = useRef<T | null>(null);
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el || shown) return;
+
+    // Immediate check if element is already in viewport
+    const rect = el.getBoundingClientRect();
+    if (rect.top <= window.innerHeight * 1.05 && rect.bottom >= -50) {
+      setShown(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -14,7 +22,7 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
           io.disconnect();
         }
       },
-      { threshold, rootMargin: "0px 0px -8% 0px" },
+      { threshold, rootMargin: "0px 0px 40px 0px" },
     );
     io.observe(el);
     return () => io.disconnect();

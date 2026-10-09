@@ -18,6 +18,7 @@ export interface WeddingEvent {
   colors: EventColor[];
   isRestricted?: boolean;
   restrictedNotes?: string;
+  invitees?: string[];
 }
 
 export const wedding = {
@@ -60,10 +61,10 @@ export const wedding = {
       chapter: "Chapter I",
       day: "Sunday",
       date: "13 December 2026",
-      time: "11:00 AM onwards",
+      time: "12:00 PM onwards",
       venueSpot: "Pool Side",
       fullVenue: "Pool Side · Kaka Ji Ni Wadi, Panvel",
-      flow: "Starts at 11:00 AM with Mehendi and followed by Haldi",
+      flow: "Starts at 12:00 PM with Mehendi and followed by Haldi",
       note: "Sun-drenched festivities, fragrant henna, and joyful turmeric splashes by the pool.",
       colorCodeText: "Dark Pink, Yellow & Orange",
       colors: [
@@ -72,6 +73,14 @@ export const wedding = {
         { name: "Tangerine Orange", hex: "#FB8C00" },
       ],
       isRestricted: false,
+      invitees: [
+        "Riya Arora",
+        "Meet Bali",
+        "Geet Bali",
+        "Krishna Ved",
+        "Anagha Panchal",
+        "Devashree Ved",
+      ],
     },
     {
       name: "Engagement & Sangeet",
@@ -90,6 +99,7 @@ export const wedding = {
         { name: "Dark Blue", hex: "#0D47A1" },
       ],
       isRestricted: false,
+      invitees: ["Dr. Amit Bali", "Dr. Geetika Bali"],
     },
     {
       name: "The Sacred Pheras",
@@ -111,6 +121,14 @@ export const wedding = {
       ],
       isRestricted: true,
       restrictedNotes: "Dress Code Advisory: Anything but Red / Maroon (reserved for the bride & sacred rituals).",
+      invitees: [
+        "Mr. Mukesh Arora",
+        "Mrs. Vishakha Arora",
+        "Mr. Satyapal Arora",
+        "Mrs. Krishana Arora",
+        "Mr. (Late) Vijay Hadkar",
+        "Mrs. (Late) Vaijayanti Hadkar",
+      ],
     },
     {
       name: "Grand Reception",
@@ -132,6 +150,14 @@ export const wedding = {
       ],
       isRestricted: true,
       restrictedNotes: "Dress Code Advisory: Anything but Red / Maroon.",
+      invitees: [
+        "Mr. Mukesh Arora",
+        "Mrs. Vishakha Arora",
+        "Mr. Satyapal Arora",
+        "Mrs. Krishana Arora",
+        "Mr. (Late) Vijay Hadkar",
+        "Mrs. (Late) Vaijayanti Hadkar",
+      ],
     },
   ] as WeddingEvent[],
   venue: {
@@ -161,7 +187,7 @@ export function buildIcs() {
     `DTEND:${fmt(end)}`,
     `SUMMARY:Wedding of ${wedding.brideFullName} & ${wedding.groomFullName}`,
     `LOCATION:${wedding.venue.name}, ${wedding.venue.address}`,
-    `DESCRIPTION:Join us for the wedding celebrations of Richa Arora & Samson at Kaka Ji Ni Wadi, Panvel.\\n\\nSchedule:\\n- 13 Dec 11:00 AM: Carnival (Haldi & Mehendi) @ Pool Side (Dark Pink, Yellow & Orange)\\n- 13 Dec 7:00 PM: Engagement & Sangeet / Cocktail @ Sagar Palace Banquet (Red & Dark Blue)\\n- 14 Dec 4:00 PM: Sacred Pheras @ The Lawn (Anything but Red/Maroon)\\n- 14 Dec 7:00 PM: Reception @ The Lawn (Anything but Red/Maroon)`,
+    `DESCRIPTION:Join us for the wedding celebrations of Richa Arora & Samson at Kaka Ji Ni Wadi, Panvel.\\n\\nSchedule:\\n- 13 Dec 12:00 PM: Carnival (Haldi & Mehendi) @ Pool Side (Dark Pink, Yellow & Orange)\\n- 13 Dec 7:00 PM: Engagement & Sangeet / Cocktail @ Sagar Palace Banquet (Red & Dark Blue)\\n- 14 Dec 4:00 PM: Sacred Pheras @ The Lawn (Anything but Red/Maroon)\\n- 14 Dec 7:00 PM: Reception @ The Lawn (Anything but Red/Maroon)`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");

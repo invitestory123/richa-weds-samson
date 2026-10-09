@@ -128,6 +128,30 @@ export function CelebrationsCard() {
                 </div>
               </div>
 
+              {/* Cordially Invited By / Invitees Highlight */}
+              {event.invitees && event.invitees.length > 0 && (
+                <div className="mt-5 rounded-sm border border-hall-glow/30 bg-[#25180a]/85 p-3.5 sm:p-4 backdrop-blur-md">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-hall-glow/20 text-hall-glow text-[0.62rem]">
+                      ✦
+                    </span>
+                    <span className="font-title text-[0.58rem] uppercase tracking-[0.25em] text-hall-glow">
+                      Cordially Invited By / Invitees
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-0.5">
+                    {event.invitees.map((invitee) => (
+                      <span
+                        key={invitee}
+                        className="inline-flex items-center rounded-full border border-hall-glow/30 bg-black/45 px-2.5 py-1 font-body text-[0.72rem] text-hall-light tracking-wide shadow-sm"
+                      >
+                        {invitee}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Venue Spot */}
               <div className="event-venue">
                 <span className="block font-title text-[0.56rem] uppercase tracking-[0.28em] text-hall-glow/80 mb-0.5">
@@ -227,6 +251,28 @@ export function CelebrationsCard() {
                     </span>
                   ))}
                 </div>
+
+                {/* Cordially Invited By / Invitees */}
+                {ev.invitees && ev.invitees.length > 0 && (
+                  <div className="mt-3.5 pt-3 border-t border-hall-glow/20">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <span className="text-hall-glow text-[0.6rem]">✦</span>
+                      <span className="text-[0.56rem] uppercase tracking-[0.22em] text-hall-glow font-title">
+                        Cordially Invited By / Invitees:
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {ev.invitees.map((invitee) => (
+                        <span
+                          key={invitee}
+                          className="inline-flex items-center rounded-full border border-hall-glow/25 bg-black/50 px-2.5 py-0.5 text-[0.62rem] text-hall-light tracking-wide"
+                        >
+                          {invitee}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-4 flex items-center gap-1.5 text-[0.74rem] text-hall-light/65">
                   <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-hall-glow shrink-0">

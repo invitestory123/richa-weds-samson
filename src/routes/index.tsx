@@ -66,14 +66,24 @@ function Ornament({ className = "", width = 260 }: { className?: string; width?:
 
 type Stage = "cover" | "intro" | "couple" | "content";
 
-function CoverScreen({ open, onOpen }: { open: boolean; onOpen: () => void }) {
+function CoverScreen({
+  open,
+  onOpen,
+  isOpening,
+}: {
+  open: boolean;
+  onOpen: () => void;
+  isOpening: boolean;
+}) {
   return (
     <div
       onClick={onOpen}
-      className={`fixed inset-0 z-50 flex cursor-pointer items-center justify-center overflow-hidden bg-black select-none transition-opacity duration-700 ${
-        open ? "pointer-events-none opacity-0" : "opacity-100"
+      className={`fixed inset-0 z-50 flex cursor-pointer items-center justify-center overflow-hidden bg-black select-none transition-all duration-1000 ease-out ${
+        open || isOpening
+          ? "pointer-events-none opacity-0 scale-105"
+          : "opacity-100 scale-100"
       }`}
-      aria-hidden={open}
+      aria-hidden={open || isOpening}
     >
       {/* Background Cover Image */}
       <img
@@ -120,6 +130,7 @@ function CoverScreen({ open, onOpen }: { open: boolean; onOpen: () => void }) {
 function Invitation() {
   const [stage, setStage] = useState<Stage>("cover");
   const [coverOpen, setCoverOpen] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
   const [introVisible, setIntroVisible] = useState(false);
   const [coupleVisible, setCoupleVisible] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -128,30 +139,9 @@ function Invitation() {
   const glowRef = useParallax(0.16);
   const bgmRef = useRef<BgmPlayerHandle | null>(null);
 
-  const startPlayback = useCallback(() => {
-    setStage("intro");
-    setIntroVisible(true);
-    // Start background music
-    bgmRef.current?.play();
-
-    if (introRef.current) {
-      introRef.current.currentTime = 0;
-      introRef.current.play().catch(() => {
-        if (introRef.current) {
-          introRef.current.muted = true;
-          setIsMuted(true);
-          introRef.current.play().catch(() => {});
-        }
-      });
-    }
-  }, []);
-
-  const handleIntroPlaying = useCallback(() => {
-    setCoverOpen(true);
-  }, []);
-
   const handleIntroEnded = useCallback(() => {
     setStage("couple");
+    setIntroVisible(false);
     setCoupleVisible(true);
     if (coupleRef.current) {
       coupleRef.current.currentTime = 0;
@@ -174,6 +164,48 @@ function Invitation() {
     setStage("content");
     setCoupleVisible(false);
   }, []);
+
+  const startPlayback = useCallback(() => {
+    // Instantly begin smooth opening transition
+    setIsOpening(true);
+    setCoverOpen(true);
+    setStage("intro");
+    setIntroVisible(true);
+
+    // Start background music
+    bgmRef.current?.play();
+
+    // Start intro video
+    if (introRef.current) {
+      introRef.current.currentTime = 0;
+      const playPromise = introRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          if (introRef.current) {
+            introRef.current.muted = true;
+            setIsMuted(true);
+            introRef.current.play().catch(() => {
+              // Gracefully continue to couple stage if video can't play
+              handleIntroEnded();
+            });
+          }
+        });
+      }
+    }
+  }, [handleIntroEnded]);
+
+  const handleIntroPlaying = useCallback(() => {
+    setCoverOpen(true);
+    setIsOpening(false);
+  }, []);
+
+  const handleIntroError = useCallback(() => {
+    handleIntroEnded();
+  }, [handleIntroEnded]);
+
+  const handleCoupleError = useCallback(() => {
+    handleCoupleEnded();
+  }, [handleCoupleEnded]);
 
   const skipCurrentVideo = useCallback(() => {
     if (stage === "intro") {
@@ -226,10 +258,16 @@ function Invitation() {
       <BgmPlayer ref={bgmRef} />
 
       {/* ── Initial Cover Screen (Fades out when Intro begins playing) ── */}
-      <CoverScreen open={coverOpen} onOpen={startPlayback} />
+      <CoverScreen open={coverOpen} isOpening={isOpening} onOpen={startPlayback} />
 
       {/* ── Hero & Video Presentation Section ── */}
-      <section className="relative flex min-h-[100svh] flex-col justify-start overflow-hidden bg-[#150e04]">
+      <section
+        className="relative flex min-h-[100svh] flex-col justify-start overflow-hidden bg-[#150e04]"
+        onClick={() => {
+          if (stage === "intro") handleIntroEnded();
+          else if (stage === "couple") handleCoupleEnded();
+        }}
+      >
         {/* Golden Hall Backdrop (Layer 0 - always solid underneath once opened) */}
         <img
           src={hall}
@@ -247,7 +285,12 @@ function Invitation() {
           preload="auto"
           onPlaying={handleCouplePlaying}
           onEnded={handleCoupleEnded}
-          className={`absolute inset-0 h-full w-full object-cover z-10 transition-opacity duration-700 ${
+          onError={handleCoupleError}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCoupleEnded();
+          }}
+          className={`absolute inset-0 h-full w-full object-cover z-10 cursor-pointer transition-opacity duration-1000 ease-in-out ${
             coupleVisible ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         />
@@ -261,7 +304,12 @@ function Invitation() {
           preload="auto"
           onPlaying={handleIntroPlaying}
           onEnded={handleIntroEnded}
-          className={`absolute inset-0 h-full w-full object-cover z-20 transition-opacity duration-700 ${
+          onError={handleIntroError}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleIntroEnded();
+          }}
+          className={`absolute inset-0 h-full w-full object-cover z-20 cursor-pointer transition-opacity duration-1000 ease-in-out ${
             introVisible ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         />
@@ -280,7 +328,10 @@ function Invitation() {
 
         {/* Top Controls during video playback: Skip & Sound Toggle */}
         {(stage === "intro" || stage === "couple") && (
-          <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
+          <div
+            className="absolute top-4 right-4 z-30 flex items-center gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               onClick={toggleSound}
@@ -305,6 +356,22 @@ function Invitation() {
               <span>Skip</span>
               <span className="text-[0.7rem]">▶▶</span>
             </button>
+          </div>
+        )}
+
+        {/* Floating Tap Anywhere to Continue Prompt during video playback */}
+        {(stage === "intro" || stage === "couple") && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              skipCurrentVideo();
+            }}
+            className="absolute bottom-7 left-1/2 -translate-x-1/2 z-30 cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 select-none"
+          >
+            <span className="flex items-center gap-2 rounded-full border border-hall-glow/50 bg-[#1f1406]/85 px-5 py-2 text-[0.64rem] uppercase tracking-[0.26em] text-hall-light shadow-[0_8px_24px_rgba(0,0,0,0.6)] backdrop-blur-md">
+              <span>Tap anywhere to continue</span>
+              <span className="text-hall-glow text-[0.7rem]">▶</span>
+            </span>
           </div>
         )}
 
