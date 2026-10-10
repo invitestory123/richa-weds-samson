@@ -1,149 +1,124 @@
-import { useState } from "react";
-import { wedding, type WeddingEvent } from "@/lib/wedding";
+import { wedding } from "@/lib/wedding";
 import { Reveal } from "./Reveal";
 
 export function CelebrationsCard() {
-  const [active, setActive] = useState(0);
-  const [viewMode, setViewMode] = useState<"tabs" | "timeline">("tabs");
-  const event: WeddingEvent = wedding.events[active];
-
   return (
     <section className="celebrations-editorial" aria-labelledby="celebrations-title">
       <Reveal className="celebrations-editorial__heading">
         <p className="section-kicker">Two Days · Four Chapters</p>
         <h2 id="celebrations-title">Wedding Itinerary</h2>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-2">
-          <p className="max-w-[380px] text-ivory/70 text-[0.92rem] leading-relaxed">
-            Move through the moments — from poolside carnival hues to the sacred pheras under the stars at Kaka Ji Ni Wadi.
-          </p>
-          <div className="flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-hall-glow/30 bg-black/40 p-1 backdrop-blur-md">
-            <button
-              type="button"
-              onClick={() => setViewMode("tabs")}
-              className={`rounded-full px-3.5 py-1 text-[0.6rem] uppercase tracking-[0.2em] transition-all cursor-pointer ${
-                viewMode === "tabs"
-                  ? "bg-hall-glow text-ink font-semibold shadow-sm"
-                  : "text-hall-light/70 hover:text-hall-light"
-              }`}
-            >
-              Interactive
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode("timeline")}
-              className={`rounded-full px-3.5 py-1 text-[0.6rem] uppercase tracking-[0.2em] transition-all cursor-pointer ${
-                viewMode === "timeline"
-                  ? "bg-hall-glow text-ink font-semibold shadow-sm"
-                  : "text-hall-light/70 hover:text-hall-light"
-              }`}
-            >
-              All Events
-            </button>
-          </div>
-        </div>
+        <p className="max-w-[420px] text-[#2c1a05] text-[0.96rem] leading-relaxed font-normal">
+          Move through the moments — from poolside carnival hues to the sacred pheras under the stars at Kaka Ji Ni Wadi.
+        </p>
       </Reveal>
 
-      {viewMode === "tabs" ? (
-        <>
-          {/* Main Stage Card */}
-          <div className="celebration-stage rounded-sm border border-hall-glow/25 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-            <div className="celebration-stage__wash" aria-hidden />
-
-            {/* Background chapter watermark */}
-            <div
-              aria-hidden
-              className="absolute left-6 bottom-4 select-none pointer-events-none font-display text-[clamp(6rem,16vw,12rem)] font-light leading-none text-hall-glow/5"
-            >
-              0{active + 1}
-            </div>
-
-            <div className="celebration-stage__content" key={event.name}>
-              <div className="flex items-center justify-between gap-2">
-                <span className="event-number">0{active + 1}</span>
-                <span className="rounded-full border border-hall-glow/40 bg-hall-deep/60 px-3 py-1 font-body text-[0.58rem] tracking-[0.24em] uppercase text-hall-glow">
-                  {event.chapter}
+      {/* Grid displaying All Events */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mt-6">
+        {wedding.events.map((ev, idx) => (
+          <Reveal
+            key={ev.name}
+            delay={idx * 75}
+            className="group relative overflow-hidden rounded-sm border border-hall-glow/35 bg-[#1b1105]/95 p-6 sm:p-8 shadow-[0_16px_40px_rgba(0,0,0,0.45)] backdrop-blur-md flex flex-col justify-between transition-all duration-300 hover:border-hall-glow/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+          >
+            <div>
+              {/* Header: Chapter badge, Day pill & Index */}
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-display text-3xl font-light text-[#ffd982]/85">
+                    0{idx + 1}
+                  </span>
+                  <span className="rounded-full border border-hall-glow/40 bg-black/55 px-3 py-1 font-body text-[0.58rem] tracking-[0.22em] uppercase text-[#ffd982] font-medium">
+                    {ev.chapter}
+                  </span>
+                </div>
+                <span className="rounded-full border border-hall-glow/35 bg-black/60 px-3 py-1 text-[0.62rem] tracking-[0.2em] uppercase text-[#fceec9] font-medium">
+                  {ev.day}
                 </span>
               </div>
 
-              <p className="font-title text-[0.65rem] tracking-[0.24em] text-hall-glow uppercase">
-                {event.day} · {event.date} · {event.time}
-              </p>
+              {/* Date & Time */}
+              <div className="flex items-center gap-2 text-[0.72rem] tracking-[0.22em] uppercase text-[#ffd982] font-title mb-2">
+                <span>{ev.date}</span>
+                <span className="text-hall-glow/60">·</span>
+                <span>{ev.time}</span>
+              </div>
 
-              <h3 className="mt-2 text-ivory">{event.name}</h3>
-              {event.subtitle && (
-                <p className="mt-1 font-display text-[1.1rem] italic text-hall-light/80">
-                  {event.subtitle}
+              {/* Name & Subtitle */}
+              <h3 className="font-display text-[2rem] sm:text-[2.25rem] font-normal text-white leading-tight">
+                {ev.name}
+              </h3>
+              {ev.subtitle && (
+                <p className="font-display text-[1.12rem] italic text-[#ffd982] mt-1">
+                  {ev.subtitle}
                 </p>
               )}
 
-              {/* Specific timing flow */}
-              <div className="mt-4 rounded border border-hall-glow/20 bg-black/30 px-3.5 py-2 text-[0.76rem] text-hall-light/90">
-                <span className="font-semibold text-hall-glow uppercase tracking-wider text-[0.58rem] block mb-0.5">
+              {/* Program schedule flow */}
+              <div className="mt-4 rounded border border-hall-glow/30 bg-black/50 p-3.5 text-[0.78rem] text-[#f7e9c6] leading-relaxed">
+                <span className="font-semibold text-[#ffd982] uppercase tracking-[0.2em] text-[0.58rem] block mb-1">
                   Program Schedule
                 </span>
-                {event.flow}
+                {ev.flow}
               </div>
 
-              <p className="event-note">{event.note}</p>
+              {/* Note */}
+              <p className="mt-3.5 text-[0.88rem] text-ivory/90 leading-relaxed font-light">
+                {ev.note}
+              </p>
+            </div>
 
-              {/* Colour Code / Dress Palette Highlight */}
-              <div className="mt-6 rounded-sm border border-hall-glow/30 bg-[#241708]/80 p-4 backdrop-blur-md">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-title text-[0.58rem] uppercase tracking-[0.25em] text-hall-glow">
+            {/* Bottom Details */}
+            <div className="mt-6 pt-5 border-t border-hall-glow/25 space-y-4">
+              {/* Colour Code / Dress Code */}
+              <div className="rounded-sm border border-hall-glow/30 bg-[#251707]/90 p-3.5">
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <span className="font-title text-[0.58rem] uppercase tracking-[0.24em] text-[#ffd982]">
                     Dress Code / Colour Code
                   </span>
-                  {event.isRestricted && (
-                    <span className="rounded border border-amber-400/50 bg-amber-950/70 px-2 py-0.5 text-[0.54rem] uppercase tracking-wider text-amber-300">
+                  {ev.isRestricted && (
+                    <span className="rounded border border-amber-400/60 bg-amber-950/80 px-2 py-0.5 text-[0.54rem] uppercase tracking-wider text-amber-300 font-semibold">
                       Advisory
                     </span>
                   )}
                 </div>
-
-                <p className="mt-1.5 font-display text-[1.22rem] font-medium text-ivory">
-                  {event.colorCodeText}
+                <p className="font-display text-[1.22rem] font-medium text-white">
+                  {ev.colorCodeText}
                 </p>
-
-                {event.restrictedNotes && (
-                  <p className="mt-1 text-[0.72rem] text-amber-200/90 italic leading-snug">
-                    {event.restrictedNotes}
+                {ev.restrictedNotes && (
+                  <p className="mt-1 text-[0.74rem] text-amber-200 italic leading-snug">
+                    {ev.restrictedNotes}
                   </p>
                 )}
-
-                {/* Color Swatch Circles */}
-                <div className="mt-3 flex items-center gap-2.5 flex-wrap">
-                  {event.colors.map((c) => (
+                <div className="mt-2.5 flex items-center gap-2 flex-wrap">
+                  {ev.colors.map((c) => (
                     <div
                       key={c.name}
-                      className="group relative flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 py-1 pl-1 pr-2.5 shadow-sm"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/55 py-0.5 pl-1 pr-2.5 text-[0.62rem] text-[#f7e9c6]"
                     >
                       <span
-                        className="h-4 w-4 rounded-full border border-white/30 shadow-inner"
+                        className="h-3 w-3 rounded-full border border-white/30 shadow-sm"
                         style={{ backgroundColor: c.hex }}
                       />
-                      <span className="text-[0.62rem] text-hall-light/90 tracking-wider">
-                        {c.name}
-                      </span>
+                      <span>{c.name}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Cordially Invited By / Invitees Highlight */}
-              {event.invitees && event.invitees.length > 0 && (
-                <div className="mt-5 rounded-sm border border-hall-glow/30 bg-[#25180a]/85 p-3.5 sm:p-4 backdrop-blur-md">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-hall-glow/20 text-hall-glow text-[0.62rem]">
-                      ✦
-                    </span>
-                    <span className="font-title text-[0.58rem] uppercase tracking-[0.25em] text-hall-glow">
+              {/* Cordially Invited By / Invitees */}
+              {ev.invitees && ev.invitees.length > 0 && (
+                <div className="rounded-sm border border-hall-glow/25 bg-black/45 p-3">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <span className="text-[#ffd982] text-[0.65rem]">✦</span>
+                    <span className="font-title text-[0.56rem] uppercase tracking-[0.22em] text-[#ffd982]">
                       Cordially Invited By / Invitees
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-1.5 pt-0.5">
-                    {event.invitees.map((invitee) => (
+                  <div className="flex flex-wrap gap-1.5">
+                    {ev.invitees.map((invitee) => (
                       <span
                         key={invitee}
-                        className="inline-flex items-center rounded-full border border-hall-glow/30 bg-black/45 px-2.5 py-1 font-body text-[0.72rem] text-hall-light tracking-wide shadow-sm"
+                        className="inline-flex items-center rounded-full border border-hall-glow/30 bg-[#251707]/85 px-2.5 py-0.5 text-[0.68rem] text-[#fbf5e8] tracking-wide"
                       >
                         {invitee}
                       </span>
@@ -153,138 +128,16 @@ export function CelebrationsCard() {
               )}
 
               {/* Venue Spot */}
-              <div className="event-venue">
-                <span className="block font-title text-[0.56rem] uppercase tracking-[0.28em] text-hall-glow/80 mb-0.5">
-                  Venue Location
-                </span>
-                <p className="text-[0.94rem] font-medium text-ivory">{event.fullVenue}</p>
+              <div className="flex items-center gap-2 pt-1 text-[0.82rem] text-[#f7e9c6] font-medium">
+                <svg viewBox="0 0 24 24" className="h-4 w-4 fill-hall-glow shrink-0">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                <span>{ev.fullVenue}</span>
               </div>
             </div>
-          </div>
-
-          {/* Interactive Navigation Selector */}
-          <div
-            className="celebration-selector grid-cols-4 mt-2"
-            role="tablist"
-            aria-label="Wedding celebrations"
-          >
-            {wedding.events.map((item, index) => (
-              <button
-                key={item.name}
-                type="button"
-                role="tab"
-                aria-selected={active === index}
-                className={active === index ? "is-active" : ""}
-                onClick={() => setActive(index)}
-              >
-                <span>0{index + 1}</span>
-                <div className="font-title text-[0.64rem] tracking-[0.16em] uppercase">
-                  {item.name}
-                </div>
-                <small className="block text-[0.54rem] text-hall-light/50 tracking-wider mt-1">
-                  {item.date.split(" ")[0]} {item.date.split(" ")[1]} · {item.time}
-                </small>
-              </button>
-            ))}
-          </div>
-        </>
-      ) : (
-        /* Timeline / All Events View */
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
-          {wedding.events.map((ev, idx) => (
-            <Reveal
-              key={ev.name}
-              delay={idx * 100}
-              className="relative overflow-hidden rounded-sm border border-hall-glow/30 bg-[#201407]/90 p-6 shadow-xl backdrop-blur-md flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="font-display text-2xl text-hall-glow/60">0{idx + 1}</span>
-                  <span className="rounded-full border border-hall-glow/30 bg-black/40 px-2.5 py-0.5 text-[0.56rem] tracking-[0.2em] uppercase text-hall-glow">
-                    {ev.day} · {ev.time}
-                  </span>
-                </div>
-
-                <p className="font-title text-[0.62rem] uppercase tracking-[0.22em] text-hall-light/70">
-                  {ev.date}
-                </p>
-                <h3 className="font-display text-2xl text-ivory mt-1">{ev.name}</h3>
-                {ev.subtitle && (
-                  <p className="font-display text-[0.95rem] italic text-hall-light/80 mt-0.5">
-                    {ev.subtitle}
-                  </p>
-                )}
-
-                <p className="mt-3 text-[0.8rem] text-ivory/75 leading-relaxed font-light">
-                  {ev.note}
-                </p>
-
-                <div className="mt-3 rounded border border-hall-glow/20 bg-black/30 p-2.5 text-[0.72rem] text-hall-light/85">
-                  <span className="font-semibold text-hall-glow uppercase tracking-wider text-[0.54rem] block mb-0.5">
-                    Schedule:
-                  </span>
-                  {ev.flow}
-                </div>
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-hall-glow/20">
-                <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="text-[0.58rem] uppercase tracking-wider text-hall-glow">
-                    Colour Code:
-                  </span>
-                  {ev.isRestricted && (
-                    <span className="text-[0.52rem] text-amber-300 font-medium tracking-wide">
-                      Avoid Red/Maroon
-                    </span>
-                  )}
-                </div>
-                <p className="text-[0.88rem] font-medium text-ivory mb-2">{ev.colorCodeText}</p>
-
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  {ev.colors.map((c) => (
-                    <span
-                      key={c.name}
-                      className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-black/50 px-2 py-0.5 text-[0.58rem] text-hall-light"
-                    >
-                      <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: c.hex }} />
-                      {c.name}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Cordially Invited By / Invitees */}
-                {ev.invitees && ev.invitees.length > 0 && (
-                  <div className="mt-3.5 pt-3 border-t border-hall-glow/20">
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <span className="text-hall-glow text-[0.6rem]">✦</span>
-                      <span className="text-[0.56rem] uppercase tracking-[0.22em] text-hall-glow font-title">
-                        Cordially Invited By / Invitees:
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {ev.invitees.map((invitee) => (
-                        <span
-                          key={invitee}
-                          className="inline-flex items-center rounded-full border border-hall-glow/25 bg-black/50 px-2.5 py-0.5 text-[0.62rem] text-hall-light tracking-wide"
-                        >
-                          {invitee}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="mt-4 flex items-center gap-1.5 text-[0.74rem] text-hall-light/65">
-                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-hall-glow shrink-0">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                  </svg>
-                  <span className="truncate">{ev.venueSpot} · Kaka Ji Ni Wadi</span>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      )}
+          </Reveal>
+        ))}
+      </div>
     </section>
   );
 }

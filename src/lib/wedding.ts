@@ -42,7 +42,9 @@ export const wedding = {
     "Together with their families, request the honour of your presence to bless the auspicious union of",
   dateLabel: "13th & 14th December 2026",
   weddingDateLabel: "Monday, 14 December 2026",
-  shortDate: "13 · 14 . 12 . 2026",
+  shortDate: "13th – 14th December 2026",
+  dateDays: "13th – 14th",
+  dateMonthYear: "December 2026",
   countdownTarget: "2026-12-14T16:00:00+05:30",
   story: [
     "Two lives, two hearts, and two loving families coming together in eternal devotion and companionship.",

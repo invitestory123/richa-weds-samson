@@ -401,29 +401,29 @@ function Invitation() {
 
           {/* Lineage & Parentage Card in Hero */}
           <div
-            className={`reveal mt-5 mx-auto max-w-[22rem] rounded border border-hall-glow/30 bg-[#231608]/75 px-4 py-3 shadow-lg backdrop-blur-md ${isHeroTextVisible ? "reveal-on" : ""}`}
+            className={`reveal mt-5 mx-auto max-w-[22rem] rounded border border-hall-glow/35 bg-[#1b1105]/85 px-4 py-3 shadow-lg backdrop-blur-md ${isHeroTextVisible ? "reveal-on" : ""}`}
             style={{ transitionDelay: "1100ms" }}
           >
-            <div className="grid grid-cols-2 gap-3 text-center text-ivory/85">
+            <div className="grid grid-cols-2 gap-3 text-center">
               <div className="border-r border-hall-glow/25 pr-2">
-                <span className="block text-[0.52rem] uppercase tracking-[0.2em] text-hall-glow">
+                <span className="block text-[0.54rem] uppercase tracking-[0.2em] text-[#ffd982] font-semibold">
                   Bride
                 </span>
-                <span className="font-title text-[0.84rem] text-hall-light block mt-0.5">
+                <span className="font-title text-[0.88rem] text-white block mt-0.5 font-medium">
                   {wedding.brideFullName}
                 </span>
-                <span className="block text-[0.62rem] text-ivory/70 leading-snug mt-0.5">
+                <span className="block text-[0.64rem] text-[#f5ebd7] leading-snug mt-0.5">
                   {wedding.brideParents.label}
                 </span>
               </div>
               <div className="pl-2">
-                <span className="block text-[0.52rem] uppercase tracking-[0.2em] text-hall-glow">
+                <span className="block text-[0.54rem] uppercase tracking-[0.2em] text-[#ffd982] font-semibold">
                   Groom
                 </span>
-                <span className="font-title text-[0.84rem] text-hall-light block mt-0.5">
+                <span className="font-title text-[0.88rem] text-white block mt-0.5 font-medium">
                   {wedding.groomFullName}
                 </span>
-                <span className="block text-[0.62rem] text-ivory/70 leading-snug mt-0.5">
+                <span className="block text-[0.64rem] text-[#f5ebd7] leading-snug mt-0.5">
                   {wedding.groomParents.label}
                 </span>
               </div>
@@ -435,12 +435,17 @@ function Invitation() {
             style={{ transitionDelay: "1300ms" }}
           >
             <Ornament className="mt-5" width={190} />
-            <p className="mt-3 font-title text-[0.82rem] tracking-[0.36em] text-hall-light">
-              {wedding.shortDate}
-            </p>
+            <div className="mt-4 flex flex-col items-center justify-center font-title tracking-[0.28em] uppercase">
+              <span className="text-[1.25rem] sm:text-[1.4rem] text-white font-medium drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+                13th – 14th
+              </span>
+              <span className="text-[0.88rem] sm:text-[1rem] text-[#ffd885] tracking-[0.38em] mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+                December 2026
+              </span>
+            </div>
           </div>
           <p
-            className={`mx-auto mt-4 max-w-[20rem] font-display text-[1rem] italic leading-relaxed text-ivory/90 reveal ${isHeroTextVisible ? "reveal-on" : ""}`}
+            className={`mx-auto mt-4 max-w-[22rem] font-display text-[1.05rem] italic leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] reveal ${isHeroTextVisible ? "reveal-on" : ""}`}
             style={{ transitionDelay: "1500ms" }}
           >
             {wedding.invitationLine}
@@ -483,50 +488,49 @@ function Invitation() {
           <Reveal>
             <h3
               id="venue-title"
-              className="font-title text-[0.66rem] uppercase tracking-[0.42em] text-hall-glow"
+              className="font-title text-[0.68rem] uppercase tracking-[0.42em] text-[#3e2808] font-bold"
             >
               The Venue
             </h3>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-5 font-display text-[clamp(1.7rem,6.4vw,2.2rem)] font-light text-ivory">
+            <p className="mt-4 font-display text-[clamp(2.1rem,7vw,2.7rem)] font-light text-[#1a1003]">
               {wedding.venue.name}
             </p>
-            <p className="mx-auto mt-2 text-[0.84rem] text-hall-glow font-medium uppercase tracking-widest">
+            <p className="mx-auto mt-2 text-[0.9rem] text-[#422908] font-semibold uppercase tracking-widest">
               {wedding.venue.subLocation}
             </p>
-            <p className="mx-auto mt-3 max-w-[24rem] text-[0.92rem] font-light leading-relaxed text-ivory/75">
+            <p className="mx-auto mt-3 max-w-[26rem] text-[0.98rem] font-medium leading-relaxed text-[#2c1b06]">
               {wedding.venue.address}
             </p>
-            <p className="mt-2 text-[0.72rem] uppercase tracking-[0.24em] text-hall-glow/80">
+            <p className="mt-2.5 text-[0.76rem] uppercase tracking-[0.24em] text-[#4d320b] font-semibold">
               {wedding.venue.hint}
             </p>
           </Reveal>
           <Reveal delay={220} className="mt-8">
-            <div className="overflow-hidden rounded-[2px] border border-hall-glow/35 shadow-[var(--shadow-warm)]">
+            <div className="overflow-hidden rounded-[2px] border border-[#52370f]/40 shadow-[0_12px_32px_rgba(42,29,9,0.35)]">
               <iframe
                 title={`Map of ${wedding.venue.name}`}
                 src={wedding.venue.mapEmbed}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="h-56 w-full grayscale-[0.25] sepia-[0.35] contrast-[1.05]"
+                className="h-56 w-full grayscale-[0.15] sepia-[0.35] contrast-[1.05]"
               />
             </div>
           </Reveal>
-          <Reveal delay={300} className="mt-7 flex flex-col gap-3">
+          <Reveal delay={300} className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href={wedding.venue.mapsUrl}
               target="_blank"
               rel="noreferrer"
-              className="press inline-flex min-h-[48px] items-center justify-center rounded-[2px] border border-hall-glow/60 bg-hall-deep/30 px-6 font-body text-[0.66rem] uppercase tracking-[0.32em] text-hall-light hover:border-hall-glow"
+              className="press inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center rounded-[2px] border border-[#3e2808] bg-[#2a1b08] px-7 font-body text-[0.68rem] uppercase tracking-[0.32em] text-[#ffffff] font-semibold hover:bg-[#1a1003] shadow-md"
             >
               Open in Google Maps
             </a>
             <button
               type="button"
               onClick={addToCalendar}
-              className="press inline-flex min-h-[48px] items-center justify-center rounded-[2px] px-6 font-body text-[0.66rem] uppercase tracking-[0.32em] text-ink font-medium"
-              style={{ background: "var(--grad-gold)" }}
+              className="press inline-flex min-h-[48px] w-full sm:w-auto items-center justify-center rounded-[2px] border border-[#3e2808] bg-transparent hover:bg-[#3e2808]/10 px-7 font-body text-[0.68rem] uppercase tracking-[0.32em] text-[#1c1103] font-bold shadow-sm"
             >
               Add to Calendar
             </button>
@@ -557,10 +561,11 @@ function Invitation() {
             <p className="mt-8 font-display text-[clamp(2.3rem,12vw,3.2rem)] font-light leading-tight gold-text">
               {wedding.bride} &amp; {wedding.groom}
             </p>
-            <p className="mt-4 font-title text-[0.74rem] tracking-[0.34em] text-hall-light">
-              {wedding.shortDate}
-            </p>
-            <p className="mx-auto mt-6 max-w-[22rem] font-display text-[1.05rem] italic text-ivory/80">
+            <div className="mt-4 font-title tracking-[0.28em] uppercase">
+              <span className="block text-[1.1rem] text-white font-medium">13th – 14th</span>
+              <span className="block text-[0.82rem] text-[#ffd885] tracking-[0.36em] mt-1">December 2026</span>
+            </div>
+            <p className="mx-auto mt-6 max-w-[22rem] font-display text-[1.05rem] italic text-ivory/90">
               {wedding.closing}
             </p>
             <div className="rule-gold mx-auto mt-10 w-32" />
@@ -569,7 +574,7 @@ function Invitation() {
             href="https://www.instagram.com/invitestory.in/"
             target="_blank"
             rel="noreferrer"
-            className="mt-8 inline-block font-body text-[0.5rem] uppercase tracking-[0.3em] text-hall-light/35 transition-colors hover:text-hall-glow/70"
+            className="mt-8 inline-block font-body text-[0.56rem] uppercase tracking-[0.3em] text-[#f7e9c6]/85 transition-colors hover:text-white font-medium"
           >
             Follow @invitestory.in on Instagram
           </a>

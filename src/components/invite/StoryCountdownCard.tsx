@@ -39,7 +39,7 @@ export function StoryCountdownCard({ countdownTarget, dateLabel }: StoryCountdow
     <section className="story-editorial" aria-labelledby="story-and-countdown-title">
       <div className="story-editorial__copy">
         <Reveal>
-          <p className="section-kicker">A Union of Hearts &amp; Families</p>
+          <p className="section-kicker !text-[#ffd982] font-semibold">A Union of Hearts &amp; Families</p>
           <h2 id="story-and-countdown-title">A celebration of love, culture, and timeless bond.</h2>
         </Reveal>
         <Reveal delay={120}>
@@ -49,7 +49,7 @@ export function StoryCountdownCard({ countdownTarget, dateLabel }: StoryCountdow
           </div>
         </Reveal>
         <Reveal delay={220}>
-          <p className="countdown-label">Countdown to the Sacred Pheras (14 Dec · 4:00 PM)</p>
+          <p className="countdown-label !text-[#ffd982] font-semibold">Countdown to the Sacred Pheras (14 Dec · 4:00 PM)</p>
           <div className="editorial-countdown" aria-label="Countdown to the wedding">
             {units.map(([value, label]) => (
               <div key={label}>
@@ -58,7 +58,7 @@ export function StoryCountdownCard({ countdownTarget, dateLabel }: StoryCountdow
               </div>
             ))}
           </div>
-          <p className="story-date">{dateLabel} · {wedding.venue.name}, Panvel</p>
+          <p className="story-date !text-[#f7e9c6] font-medium">{dateLabel} · {wedding.venue.name}, Panvel</p>
         </Reveal>
       </div>
     </section>
